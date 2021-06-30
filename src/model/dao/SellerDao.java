@@ -11,3 +11,4 @@ public interface SellerDao {
 	Seller findById(Integer id); //funcao responsavel por retornar caso um department exista
 	List<Seller> findAll(); //funcao responsavel por retornar uma lista de departments
 }
+	
