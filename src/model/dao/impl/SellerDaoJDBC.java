@@ -53,18 +53,8 @@ public class SellerDaoJDBC implements SellerDao {
 			st.setInt(1, id);
 			rs = st.executeQuery(); //executa sql, e o resultado fica armazenado em rs
 				if(rs.next()) {
-					Department dep = new Department();
-					dep.setId(rs.getInt("DepartmentId"));//pega o id do department
-					dep.setName(rs.getString("DepName"));//pega o nome do department
-					
-					Seller obj = new Seller();
-					obj.setId(rs.getInt("Id"));//pega o que contem no campo Id no BD
-					obj.setName(rs.getString("Name"));//pega o nome que contem no campo name no BD
-					obj.setEmail(rs.getString("Email"));//pega o email que contem no campo email no BD
-					obj.setBaseSalary(rs.getDouble("BaseSalary"));//pega o salario que contem no campo BaseSalary no BD
-					obj.setBirthDate(rs.getDate("BirthDate"));//pega a data de aniversatio que contem no BD
-					obj.setDepartment(dep);//pega o Departamento do vendedor(No caso o que encontramos acima)
-					
+					Department dep = instantiateDepartment(rs);
+					Seller obj = instantiateSeller(rs, dep);	
 					return obj;
 				}
 				else {
@@ -79,6 +69,24 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeResultSet(rs);
 		}
 		
+	}
+
+	private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller obj = new Seller();
+		obj.setId(rs.getInt("Id"));//pega o que contem no campo Id no BD
+		obj.setName(rs.getString("Name"));//pega o nome que contem no campo name no BD
+		obj.setEmail(rs.getString("Email"));//pega o email que contem no campo email no BD
+		obj.setBaseSalary(rs.getDouble("BaseSalary"));//pega o salario que contem no campo BaseSalary no BD
+		obj.setBirthDate(rs.getDate("BirthDate"));//pega a data de aniversatio que contem no BD
+		obj.setDepartment(dep);//pega o Departamento do vendedor(No caso o que encontramos acima)
+		return obj;
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));//pega o id do department
+		dep.setName(rs.getString("DepName"));//pega o nome do department
+		return dep;
 	}
 
 	@Override
